@@ -67,10 +67,10 @@ async function run() {
     const octokit = github.getOctokit(token);
     const context = github.context;
 
-    // if (context.eventName !== 'issue_comment' && context.eventName !== 'issues') {
-    //   core.setFailed('This action only works on commented events.');
-    //   return;
-    // }
+    if (context.eventName !== 'issue_comment' && context.eventName !== 'issues') {
+      core.setFailed('This action only works on commented events.');
+      return;
+    }
 
     const commentId = context.payload.comment.id;
     const commentBody = context.payload.comment.body;
