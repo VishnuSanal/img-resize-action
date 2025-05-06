@@ -12,5 +12,5 @@ jobs:
         uses: VishnuSanal/img-resize-action@6ef8d819165251d1c92d78bcb94e311a886491d4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          width: 800
-          height: 600
+          width: 600
+          height: 800

@@ -6,9 +6,8 @@ Resize any image to the desired size whenever someone comments on your repo.
 
 - `width`
 - `height`
-
-<!-- ## Outputs -->
+- `github-token` (with write access)
 
 ## Example usage
 
-please see `example.yml`
+please see `.github/actions/main.yml`
