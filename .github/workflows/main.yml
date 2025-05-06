@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Resize Image
-        uses: VishnuSanal/img-resize-action@13b9b5a7236b39a1eeda6a79517a990c86a2f65f
+        uses: VishnuSanal/img-resize-action@88afe53cf94786138c755763b2b3d1681b463a33
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           width: 600
