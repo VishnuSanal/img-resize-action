@@ -1,0 +1,15 @@
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  sanitize-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Resize Image
+        uses: VishnuSanal/img-resize-action@6ef8d819165251d1c92d78bcb94e311a886491d4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          width: 800
+          height: 600
