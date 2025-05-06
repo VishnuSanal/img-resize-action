@@ -1,0 +1,17 @@
+name: "Resize Image"
+description: "Resize Image to the desired size whenever someone comments on your repo"
+inputs:
+  github-token:
+    description: "GitHub token"
+    required: true
+  width:
+    description: "Target Width"
+    required: true
+    default: "600"
+  height:
+    description: "Target Height"
+    required: true
+    default: "800"
+runs:
+  using: "node20"
+  main: "dist/index.js"
