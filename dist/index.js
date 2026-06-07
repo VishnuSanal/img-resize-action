@@ -31829,6 +31829,28 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484);
 const github = __nccwpck_require__(3228);
 
+// Read an HTML attribute value (single- or double-quoted) from a tag string.
+function getAttr(tag, name) {
+  const match = tag.match(new RegExp(`\\b${name}\\s*=\\s*("([^"]*)"|'([^']*)')`, 'i'));
+  if (!match) return '';
+  return match[2] !== undefined ? match[2] : (match[3] || '');
+}
+
+// Rewrite image references in `body` to a normalized <img> with fixed size.
+// Handles both Markdown (`![alt](url)`) and HTML (`<img ... src="url" ...>`),
+// since GitHub now inserts <img> tags directly for uploaded images.
+function resizeImages(body, width, height) {
+  const tag = (url, alt) =>
+    `<img src="${url}" alt="${alt.replace(/"/g, '&quot;')}" width="${width}" height="${height}">`;
+
+  return body
+    .replace(/!\[(.*?)\]\((.*?)\)/g, (m, alt, url) => tag(url, alt))
+    .replace(/<img\b[^>]*>/gi, (m) => {
+      const src = getAttr(m, 'src');
+      return src ? tag(src, getAttr(m, 'alt')) : m;
+    });
+}
+
 async function run() {
   try {
     const token = core.getInput('github-token', { required: true });
@@ -31849,14 +31871,10 @@ async function run() {
     const body = target.body;
     const repo = context.repo;
 
-    // Regex to capture alt text and URL from markdown image: ![alt](url)
-    const updatedBody = body.replace(/!\[(.*?)\]\((.*?)\)/g, (match, alt, url) => {
-      const safeAlt = alt.replace(/"/g, '&quot;'); // escape quotes in alt
-      return `<img src="${url}" alt="${safeAlt}" width="${width}" height="${height}">`;
-    });
+    const updatedBody = resizeImages(body, width, height);
 
     if (updatedBody === body) {
-      console.log('No Markdown image tags found.');
+      console.log('No image tags found.');
       return;
     }
 
